@@ -2,16 +2,15 @@ const express = require('express');
 const recordsRouter = express.Router();
 const recordsController = require('../controllers/recordsControllers.js');
 
-// recordsRouter.get();
+recordsRouter.get('/', recordsController.getAllRecords);
 
-// recordsRouter.get();
+recordsRouter.get('/:recordId', recordsController.getRecord);
 
-// recordsRouter.post();
+recordsRouter.post('/', recordsController.postRecord);
 
-// recordsRouter.put();
+recordsRouter.put('/:recordId', recordsController.updateRecord);
 
-// recordsRouter.delete();
+recordsRouter.delete('/:recordId', recordsController.deleteRecord);
 
-// recordsRouter.get('/:personId', statController.getPlayerStats);
 
 module.exports = recordsRouter;

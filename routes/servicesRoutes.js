@@ -2,16 +2,14 @@ const express = require('express');
 const servicesRouter = express.Router();
 const servicesController = require('../controllers/servicesControllers.js');
 
-// servicesRouter.get();
+servicesRouter.get('/', servicesController.getAllServices);
 
-// servicesRouter.get();
+servicesRouter.get('/:serviceId', servicesController.getService);
 
-// servicesRouter.post();
+servicesRouter.post('/', servicesController.postService);
 
-// servicesRouter.put();
+servicesRouter.put('/:serviceId', servicesController.updateService);
 
-// servicesRouter.delete();
-
-// servicesRouter.get('/:personId', statController.getPlayerStats);
+servicesRouter.delete('/:serviceId', servicesController.deleteService);
 
 module.exports = servicesRouter;

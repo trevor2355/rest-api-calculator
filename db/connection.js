@@ -3,12 +3,13 @@ const Sequelize = require('sequelize');
 
 console.log(process.env.POSTGRES_DB)
 
-// Option 1: Passing parameters separately
-const sequelize = new Sequelize(process.env.POSTRGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PW, {
+// Establish the connection 
+const sequelize = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PW, {
   host: process.env.POSTGRES_HOST,
   dialect: 'postgres'
 });
 
+// Test the connection
 sequelize
   .authenticate()
   .then(() => {

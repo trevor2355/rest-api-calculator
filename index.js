@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 const usersRoutes = require('./routes/usersRoutes.js')
 const servicesRoutes = require('./routes/servicesRoutes.js')
@@ -11,6 +12,8 @@ const app = express();
 
 //Middleware
 app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.listen(PORT, () => {
   console.log(`REST API Calculator Server listening on PORT: ${PORT}`)

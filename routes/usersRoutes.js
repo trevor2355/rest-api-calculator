@@ -1,17 +1,18 @@
 const express = require('express');
 const usersRouter = express.Router();
 const usersController = require('../controllers/usersControllers.js');
+const recordsController = require('../controllers/recordsControllers.js');
 
-// usersRouter.get();
+usersRouter.get('/', usersController.getAllUsers);
 
-// usersRouter.get();
+usersRouter.get('/:userId', usersController.getUser);
 
-// usersRouter.post();
+usersRouter.get('/:userId/records', recordsController.getUserRecords);
 
-// usersRouter.put();
+usersRouter.post('/', usersController.postUser);
 
-// usersRouter.delete();
+usersRouter.put('/:userId', usersController.updateUser);
 
-// usersRouter.get('/:personId', statController.getPlayerStats);
+usersRouter.delete('/:userId', usersController.deleteUser);
 
 module.exports = usersRouter;
