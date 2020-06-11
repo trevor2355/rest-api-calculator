@@ -39,7 +39,6 @@ Service.init({
 
 const selectAllServices = async () => {
   const services = await Service.findAll();
-  console.log("All services:", JSON.stringify(services, null, 4));
   return services;
 }
 
@@ -49,13 +48,11 @@ const selectService = async (id) => {
       id
     }
   });
-  console.log("Service:", JSON.stringify(service, null, 4));
   return service;
 }
 
 const insertService = async (service) => {
   const insert = await Service.create(service);
-  console.log("Response:", JSON.stringify(insert, null, 4));
   return insert;
 }
 
@@ -65,7 +62,6 @@ const updateService = async (id, update) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(service, null, 4));
   return service;
 }
 
@@ -75,7 +71,6 @@ const deleteService = async (id) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(service, null, 4));
   return service;
 }
 

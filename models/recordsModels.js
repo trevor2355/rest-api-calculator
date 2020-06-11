@@ -48,7 +48,6 @@ Record.init({
 
 const selectAllRecords = async () => {
   const records = await Record.findAll();
-  console.log("All records:", JSON.stringify(records, null, 4));
   return records;
 }
 
@@ -58,7 +57,6 @@ const selectRecord = async (id) => {
       id
     }
   });
-  console.log("Record:", JSON.stringify(record, null, 4));
   return record;
 }
 
@@ -68,13 +66,11 @@ const selectAllRecordsOfUser = async (user_id) => {
       user_id
     }
   });
-  console.log("Record:", JSON.stringify(record, null, 4));
   return record;
 }
 
 const insertRecord = async (record) => {
   const insert = await Record.create(record);
-  console.log("Response:", JSON.stringify(insert, null, 4));
   return insert;
 }
 
@@ -84,7 +80,6 @@ const updateRecord = async (id, update) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(record, null, 4));
   return record;
 }
 
@@ -94,7 +89,6 @@ const deleteRecord = async (id) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(record, null, 4));
   return record;
 }
 

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/trevor2355/rest-api-calculator-backend#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

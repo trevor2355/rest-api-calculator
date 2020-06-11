@@ -1,10 +1,8 @@
 const recordsModel = require('../models/recordsModels.js');
 
 const getAllRecords = (req, res) => {
-  console.log('getAllRecords')
   recordsModel.selectAllRecords()
     .then(records => {
-      console.log(records)
       res.status(200).json(records)
     })
     .catch(err => {
@@ -14,11 +12,9 @@ const getAllRecords = (req, res) => {
 }
 
 const getRecord = (req, res) => {
-  console.log('getRecord')
   let recordId = req.params.recordId;
   recordsModel.selectRecord(recordId)
   .then(record => {
-    console.log(record)
     res.status(200).json(record)
   })
   .catch(err => {
@@ -39,12 +35,9 @@ const getUserRecords = (req, res) => {
 }
 
 const postRecord = (req, res) => {
-  console.log('postRecord')
-  console.log(req.body)
   let record = req.body;
   recordsModel.insertRecord(record)
   .then(result => {
-    console.log(result)
     res.status(201).json(result)
   })
   .catch(err => {
@@ -54,12 +47,10 @@ const postRecord = (req, res) => {
 }
 
 const updateRecord = (req, res) => {
-  console.log('updateRecord')
   let recordId = req.params.recordId;
   let update = req.body;
   recordsModel.updateRecord(recordId, update)
   .then(result => {
-    console.log(result)
     res.status(201).json(result)
   })
   .catch(err => {
@@ -69,11 +60,9 @@ const updateRecord = (req, res) => {
 }
 
 const deleteRecord = (req, res) => {
-  console.log('deleteRecord')
   let recordId = req.params.recordId;
   recordsModel.deleteRecord(recordId)
   .then(result => {
-    console.log(result)
     res.status(200).json(result)
   })
   .catch(err => {

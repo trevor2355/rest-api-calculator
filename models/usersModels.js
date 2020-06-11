@@ -45,7 +45,6 @@ User.init({
 
 const selectAllUsers = async () => {
   const users = await User.findAll();
-  console.log("All Users:", JSON.stringify(users, null, 4));
   return users;
 }
 
@@ -55,13 +54,11 @@ const selectUser = async (id) => {
       id
     }
   });
-  console.log("user:", JSON.stringify(user, null, 4));
   return user;
 }
 
 const insertUser = async (user) => {
   const insert = await User.create(user);
-  console.log("Response:", JSON.stringify(insert, null, 4));
   return insert;
 }
 
@@ -71,7 +68,6 @@ const updateUser = async (id, update) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(user, null, 4));
   return user;
 }
 
@@ -81,7 +77,6 @@ const deleteUser = async (id) => {
       id
     }
   });
-  console.log("Result:", JSON.stringify(user, null, 4));
   return user;
 }
 

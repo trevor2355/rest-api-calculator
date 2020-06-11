@@ -1,10 +1,9 @@
 const servicesModel = require('../models/servicesModels.js');
+const axios = require('axios')
 
 const getAllServices = (req, res) => {
-  console.log('getAllServices')
   servicesModel.selectAllServices()
     .then(services => {
-      console.log(services)
       res.status(200).json(services)
     })
     .catch(err => {
@@ -14,11 +13,9 @@ const getAllServices = (req, res) => {
 }
 
 const getService = (req, res) => {
-  console.log('getService')
   let serviceId = req.params.serviceId;
   servicesModel.selectService(serviceId)
   .then(service => {
-    console.log(service)
     res.status(200).json(service)
   })
   .catch(err => {
@@ -28,12 +25,9 @@ const getService = (req, res) => {
 }
 
 const postService = (req, res) => {
-  console.log('postService')
-  console.log(req.body)
   let service = req.body;
   servicesModel.insertService(service)
   .then(result => {
-    console.log(result)
     res.status(201).json(result)
   })
   .catch(err => {
@@ -43,12 +37,10 @@ const postService = (req, res) => {
 }
 
 const updateService = (req, res) => {
-  console.log('updateService')
   let serviceId = req.params.serviceId;
   let update = req.body;
   servicesModel.updateService(serviceId, update)
   .then(result => {
-    console.log(result)
     res.status(201).json(result)
   })
   .catch(err => {
@@ -58,11 +50,9 @@ const updateService = (req, res) => {
 }
 
 const deleteService = (req, res) => {
-  console.log('deleteService')
   let serviceId = req.params.serviceId;
   servicesModel.deleteService(serviceId)
   .then(result => {
-    console.log(result)
     res.status(200).json(result)
   })
   .catch(err => {
@@ -71,10 +61,39 @@ const deleteService = (req, res) => {
   })
 }
 
+const requestRandomString = (req, res) => {
+  let length = req.body;
+  let request = {
+    jsonrpc: '2.0',
+    method: 'generateStrings',
+    params: {
+      apiKey: process.env.RANDOM_API_KEY,
+      n: 1,
+      length: length.length,
+      characters: 'abcdefghijklmnopqrstuvwxyz',
+      replacement:true
+    },
+    id: 1
+  }
+  axios.post('https://api.random.org/json-rpc/2/invoke', request)
+    .then(function (response) {
+      if (response.data.error) {
+        throw new Error(response.data.error.message)
+      }
+      let string = response.data.result.random.data[0];
+      res.status(200).json({ string })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ err })
+    })
+}
+
 module.exports = {
   getAllServices,
   getService,
   postService,
   updateService,
-  deleteService
+  deleteService,
+  requestRandomString
 }

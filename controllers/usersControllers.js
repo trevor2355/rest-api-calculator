@@ -59,7 +59,6 @@ const validateUser = (req, res) => {
   let loginCredentials = req.body;
   usersModel.validateUser(loginCredentials.username)
     .then(result => {
-      console.log('result: ', result[0].dataValues.password)
       let actualPassword = result[0].dataValues.password;
       if (actualPassword === loginCredentials.password) {
         res.status(200).json(result[0])

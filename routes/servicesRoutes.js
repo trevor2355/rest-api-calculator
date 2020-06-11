@@ -12,4 +12,6 @@ servicesRouter.put('/:serviceId', servicesController.updateService);
 
 servicesRouter.delete('/:serviceId', servicesController.deleteService);
 
+servicesRouter.post('/randomstringgenerator', servicesController.requestRandomString)
+
 module.exports = servicesRouter;
