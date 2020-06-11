@@ -55,10 +55,28 @@ const deleteUser = (req, res) => {
     })
 }
 
+const validateUser = (req, res) => {
+  let loginCredentials = req.body;
+  usersModel.validateUser(loginCredentials.username)
+    .then(result => {
+      console.log('result: ', result[0].dataValues.password)
+      let actualPassword = result[0].dataValues.password;
+      if (actualPassword === loginCredentials.password) {
+        res.status(200).json(result[0])
+      } else {
+        throw new Error('Invalid Password');
+      }
+    })
+    .catch(err => {
+      res.status(404).json({ message: err })
+    })
+  }
+
 module.exports = {
   getAllUsers,
   getUser,
   postUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  validateUser
 }

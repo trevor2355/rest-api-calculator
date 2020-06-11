@@ -1,7 +1,4 @@
 const Sequelize = require('sequelize');
-// require('dotenv').config();
-
-console.log(process.env.POSTGRES_DB)
 
 // Establish the connection 
 const sequelize = new Sequelize(process.env.POSTGRES_DB, process.env.POSTGRES_USER, process.env.POSTGRES_PW, {

@@ -85,10 +85,20 @@ const deleteUser = async (id) => {
   return user;
 }
 
+const validateUser = async (username) => {
+  const user = await User.findAll({
+    where: {
+      username
+    }
+  });
+  return user;
+}
+
 module.exports = {
   selectAllUsers,
   selectUser,
   insertUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  validateUser
 }
