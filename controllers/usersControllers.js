@@ -59,6 +59,9 @@ const validateUser = (req, res) => {
   let loginCredentials = req.body;
   usersModel.validateUser(loginCredentials.username)
     .then(result => {
+      if(loginCredentials.admin && result[0].dataValues.role !== 'admin') {
+        throw new Error('User not authorized')
+      }
       let actualPassword = result[0].dataValues.password;
       if (actualPassword === loginCredentials.password) {
         res.status(200).json(result[0])

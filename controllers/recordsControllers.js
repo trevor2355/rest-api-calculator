@@ -49,8 +49,13 @@ const postRecord = (req, res) => {
 const updateRecord = (req, res) => {
   let recordId = req.params.recordId;
   let update = req.body;
+  delete update.id
+  delete update.uuid
+  console.log('recordID: ', recordId)
+  console.log('update: ', update)
   recordsModel.updateRecord(recordId, update)
   .then(result => {
+    console.log('result: ', result)
     res.status(201).json(result)
   })
   .catch(err => {
