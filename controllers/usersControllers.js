@@ -1,7 +1,12 @@
 const usersModel = require('../models/usersModels.js');
+const helpers = require('../helpers/helpers.js');
 
 const getAllUsers = (req, res) => {
-  usersModel.selectAllUsers()
+  let page = req.query.page;
+  let pageSize = req.query.pageSize;
+  let searchTerm = req.query.searchTerm
+  let filterFields = helpers.collectFilterFields([], 1, req.query);
+  usersModel.selectAllUsers(page, pageSize, searchTerm, filterFields)
     .then(users => {
       res.status(200).json(users)
     })

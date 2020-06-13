@@ -1,5 +1,6 @@
 const sequelize = require('../db/connection.js')
-const Sequelize = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
+const helpers = require('../helpers/helpers.js')
 
 const Model = Sequelize.Model;
 class Service extends Model {}
@@ -37,8 +38,20 @@ Service.init({
   modelName: 'Service'
 })
 
-const selectAllServices = async () => {
-  const services = await Service.findAll();
+const selectAllServices = async (page, pageSize, searchTerm, filterFields) => {
+  let attributes = helpers.acceptedAttributes(Object.keys(Service.rawAttributes));
+  let validatedFilterFields;
+  if (filterFields.length === 0) {
+    validatedFilterFields = attributes;
+  } else {
+    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+  }
+  const services = await Service.findAll({
+    where: {
+      ...helpers.filter(searchTerm, validatedFilterFields)
+    },
+    ...helpers.paginate({ page, pageSize })
+  });
   return services;
 }
 

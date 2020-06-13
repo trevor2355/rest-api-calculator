@@ -1,8 +1,13 @@
 const servicesModel = require('../models/servicesModels.js');
-const axios = require('axios')
+const axios = require('axios');
+const helpers = require('../helpers/helpers.js');
 
 const getAllServices = (req, res) => {
-  servicesModel.selectAllServices()
+  let page = req.query.page;
+  let pageSize = req.query.pageSize;
+  let searchTerm = req.query.searchTerm
+  let filterFields = helpers.collectFilterFields([], 1, req.query);
+  servicesModel.selectAllServices(page, pageSize, searchTerm, filterFields)
     .then(services => {
       res.status(200).json(services)
     })

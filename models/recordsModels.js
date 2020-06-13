@@ -1,5 +1,6 @@
 const sequelize = require('../db/connection.js')
-const Sequelize = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
+const helpers = require('../helpers/helpers.js')
 
 const Model = Sequelize.Model;
 class Record extends Model {}
@@ -46,8 +47,20 @@ Record.init({
   modelName: 'Record'
 })
 
-const selectAllRecords = async () => {
-  const records = await Record.findAll();
+const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
+  let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
+  let validatedFilterFields;
+  if (filterFields.length === 0) {
+    validatedFilterFields = attributes;
+  } else {
+    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+  }
+  const records = await Record.findAll({
+    where: {
+      ...helpers.filter(searchTerm, validatedFilterFields)
+    },
+    ...helpers.paginate({ page, pageSize })
+  });
   return records;
 }
 
@@ -60,13 +73,22 @@ const selectRecord = async (id) => {
   return record;
 }
 
-const selectAllRecordsOfUser = async (user_id) => {
-  const record = await Record.findAll({
+const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filterFields) => {
+  let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
+  let validatedFilterFields;
+  if (filterFields.length === 0) {
+    validatedFilterFields = attributes;
+  } else {
+    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+  }
+  const records = await Record.findAll({
     where: {
-      user_id
-    }
+      user_id,
+      ...helpers.filter(searchTerm, validatedFilterFields)
+    },
+    ...helpers.paginate({ page, pageSize })
   });
-  return record;
+  return records;
 }
 
 const insertRecord = async (record) => {

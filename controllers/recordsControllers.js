@@ -1,7 +1,12 @@
 const recordsModel = require('../models/recordsModels.js');
+const helpers = require('../helpers/helpers.js');
 
 const getAllRecords = (req, res) => {
-  recordsModel.selectAllRecords()
+  let page = req.query.page;
+  let pageSize = req.query.pageSize;
+  let searchTerm = req.query.searchTerm
+  let filterFields = helpers.collectFilterFields([], 1, req.query);
+  recordsModel.selectAllRecords(page, pageSize, searchTerm, filterFields)
     .then(records => {
       res.status(200).json(records)
     })
@@ -25,11 +30,16 @@ const getRecord = (req, res) => {
 
 const getUserRecords = (req, res) => {
   let userId = req.params.userId
-  recordsModel.selectAllRecordsOfUser(userId)
+  let page = req.query.page;
+  let pageSize = req.query.pageSize;
+  let searchTerm = req.query.searchTerm
+  let filterFields = helpers.collectFilterFields([], 1, req.query);
+  recordsModel.selectAllRecordsOfUser(userId, page, pageSize, searchTerm, filterFields)
     .then(user => {
       res.status(200).json(user)
     })
     .catch(err => {
+      console.log(err)
       res.status(500).json({ err })
     })
 }
