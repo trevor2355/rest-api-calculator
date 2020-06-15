@@ -108,5 +108,6 @@ module.exports = {
   insertUser,
   updateUser,
   deleteUser,
-  validateUser
+  validateUser,
+  User
 }
