@@ -1,17 +1,19 @@
 const express = require('express');
 const servicesRouter = express.Router();
 const servicesController = require('../controllers/servicesControllers.js');
+const passport = require('passport');
+const authHelpers = require('../helpers/authHelpers.js');
 
-servicesRouter.get('/', servicesController.getAllServices);
+servicesRouter.get('/', passport.authenticate('jwt', { session: false }), servicesController.getAllServices);
 
-servicesRouter.get('/:serviceId', servicesController.getService);
+servicesRouter.get('/:serviceId', passport.authenticate('jwt', { session: false }), servicesController.getService);
 
-servicesRouter.post('/', servicesController.postService);
+servicesRouter.post('/', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, servicesController.postService);
 
-servicesRouter.put('/:serviceId', servicesController.updateService);
+servicesRouter.put('/:serviceId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, servicesController.updateService);
 
-servicesRouter.delete('/:serviceId', servicesController.deleteService);
+servicesRouter.delete('/:serviceId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, servicesController.deleteService);
 
-servicesRouter.post('/randomstringgenerator', servicesController.requestRandomString)
+servicesRouter.post('/randomstringgenerator', passport.authenticate('jwt', { session: false }), servicesController.requestRandomString)
 
 module.exports = servicesRouter;

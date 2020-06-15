@@ -72,15 +72,29 @@ const validateUser = (req, res) => {
   let loginCredentials = req.body;
   usersModel.validateUser(loginCredentials.username)
     .then(result => {
-      if(loginCredentials.admin && result[0].dataValues.role !== 'admin') {
+      let user = result[0].dataValues
+
+      if(loginCredentials.admin && user.role !== 'admin') {
+        console.log('User not authorized')
         throw new Error('User not authorized')
       }
-      let actualPassword = result[0].dataValues.password;
-      if (actualPassword === loginCredentials.password) {
-        res.status(200).json(result[0])
-      } else {
-        throw new Error('Invalid Password');
-      }
+      let actualHash = user.hash;
+      let actualSalt = user.salt;
+
+      console.log('user:', user)
+
+      const isValid = authHelpers.validPassword(req.body.password, actualHash, actualSalt);
+
+      console.log('isValid: ', isValid)
+
+      if (isValid) {
+        const tokenObject = authHelpers.issueJWT(user);
+        console.log('Token: ', tokenObject);
+        res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, user });
+    } else {
+        console.log('you entered the wrong password')
+        throw new Error('you entered the wrong password')
+    }
     })
     .catch(err => {
       res.status(404).json({ message: err })
