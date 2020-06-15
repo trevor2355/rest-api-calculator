@@ -1,17 +1,18 @@
 const express = require('express');
 const recordsRouter = express.Router();
 const recordsController = require('../controllers/recordsControllers.js');
+const passport = require('passport');
+const authHelpers = require('../helpers/authHelpers.js');
 
-// recordsRouter.get();
+recordsRouter.get('/', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, recordsController.getAllRecords);
 
-// recordsRouter.get();
+recordsRouter.get('/:recordId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, recordsController.getRecord);
 
-// recordsRouter.post();
+recordsRouter.post('/', passport.authenticate('jwt', { session: false }), recordsController.postRecord);
 
-// recordsRouter.put();
+recordsRouter.put('/:recordId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, recordsController.updateRecord);
 
-// recordsRouter.delete();
+recordsRouter.delete('/:recordId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, recordsController.deleteRecord);
 
-// recordsRouter.get('/:personId', statController.getPlayerStats);
 
 module.exports = recordsRouter;

@@ -1,28 +1,123 @@
+const sequelize = require('../db/connection.js')
+const { Sequelize, Op } = require('sequelize');
+const helpers = require('../helpers/helpers.js')
 
+const Model = Sequelize.Model;
+class Record extends Model {}
+Record.init({
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: Sequelize.INTEGER
+  },
+  uuid: {
+    allowNull: false,
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV1,
+  },
+  service_id: {
+    type: Sequelize.INTEGER
+  },
+  user_id: {
+    type: Sequelize.INTEGER
+  },
+  cost: {
+    type: Sequelize.INTEGER
+  },
+  user_balance: {
+    type: Sequelize.INTEGER
+  },
+  service_response: {
+    type: Sequelize.STRING
+  },
+  date: {
+    type: Sequelize.DATE
+  },
+  createdAt: {
+    allowNull: false,
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    allowNull: false,
+    type: Sequelize.DATE
+  }
+}, {
+  sequelize,
+  modelName: 'Record'
+})
 
-const selectAllRecords = () => {
-
+const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
+  let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
+  let validatedFilterFields;
+  if (filterFields.length === 0) {
+    validatedFilterFields = attributes;
+  } else {
+    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+  }
+  const records = await Record.findAll({
+    where: {
+      ...helpers.filter(searchTerm, validatedFilterFields)
+    },
+    ...helpers.paginate({ page, pageSize })
+  });
+  return records;
 }
 
-const selectRecord = () => {
-
+const selectRecord = async (id) => {
+  const record = await Record.findAll({
+    where: {
+      id
+    }
+  });
+  return record;
 }
 
-const insertRecord = () => {
-
+const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filterFields) => {
+  let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
+  let validatedFilterFields;
+  if (filterFields.length === 0) {
+    validatedFilterFields = attributes;
+  } else {
+    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+  }
+  const records = await Record.findAll({
+    where: {
+      user_id,
+      ...helpers.filter(searchTerm, validatedFilterFields)
+    },
+    ...helpers.paginate({ page, pageSize })
+  });
+  return records;
 }
 
-const updateRecord = () => {
-
+const insertRecord = async (record) => {
+  const insert = await Record.create(record);
+  return insert;
 }
 
-const deleteRecord = () => {
+const updateRecord = async (id, update) => {
+  const record = await Record.update(update, {
+    where: {
+      id
+    }
+  });
+  return record;
+}
 
+const deleteRecord = async (id) => {
+  const record = await Record.destroy({
+    where: {
+      id
+    }
+  });
+  return record;
 }
 
 module.exports = {
   selectAllRecords,
   selectRecord,
+  selectAllRecordsOfUser,
   insertRecord,
   updateRecord,
   deleteRecord
