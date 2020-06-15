@@ -1,5 +1,6 @@
 const usersModel = require('../models/usersModels.js');
 const helpers = require('../helpers/helpers.js');
+const authHelpers = require('../helpers/authHelpers.js')
 
 const getAllUsers = (req, res) => {
   let page = req.query.page;
@@ -26,8 +27,15 @@ const getUser = (req, res) => {
     })
 }
 
+//this route is used to register a user to the platform
 const postUser = (req, res) => {
   let user = req.body;
+  let saltHash = authHelpers.genPassword(req.body.password);
+    
+  user.salt = saltHash.salt;
+  user.hash = saltHash.hash;
+  delete user.password;
+  console.log('user: ', user)
   usersModel.insertUser(user)
     .then(result => {
       res.status(201).json(result)
