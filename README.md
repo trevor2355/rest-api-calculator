@@ -6,7 +6,7 @@ This is a simple web platform that provides simple calculator functionality (add
 This API is for registered users and admin users, you will need a valid account in order to obtain a token that will give you access to the API.
 
 ## Getting started
-All requests should be made to the following url, the endpoints that are available are specified below in the documentation.
+All requests should be made to the following url http://ec2-54-183-247-150.us-west-1.compute.amazonaws.com/, the endpoints that are available are specified below in the documentation.
 ## Getting your valid json web token
 
 To get a valid json web token you will need to send the following request:
