@@ -66,6 +66,8 @@ const deleteService = (req, res) => {
   })
 }
 
+//This controller handles requests from the user to generate a random string
+
 const requestRandomString = (req, res) => {
   let length = req.body;
   let request = {

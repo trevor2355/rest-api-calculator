@@ -8,7 +8,7 @@ const getAllUsers = (req, res) => {
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
   usersModel.selectAllUsers(page, pageSize, searchTerm, filterFields)
-    //Delete the hashes and salts before sending request to client
+    // Delete the hashes and salts before sending request to client
     .then(unsafeUsers => {
       let users = unsafeUsers.map(user => {
         delete user.dataValues.hash;
@@ -27,6 +27,7 @@ const getUser = (req, res) => {
   let userId = req.params.userId;
   usersModel.selectUser(userId)
     .then(unsafeUsers => {
+      // Delete the hashes and salts before sending request to client
       let user = unsafeUsers.map(user => {
         delete user.dataValues.hash;
         delete user.dataValues.salt;
@@ -39,7 +40,8 @@ const getUser = (req, res) => {
     })
 }
 
-//this route is used to register a user to the platform
+//this controller is used to register a user to the platform
+
 const postUser = (req, res) => {
   let user = req.body;
   let saltHash = authHelpers.genPassword(req.body.password);
@@ -47,6 +49,7 @@ const postUser = (req, res) => {
   user.hash = saltHash.hash;
   delete user.password;
   usersModel.insertUser(user)
+    // Delete the hashes and salts before sending request to client
     .then(result => {
       delete result.dataValues.hash
       delete result.dataValues.salt
@@ -80,6 +83,8 @@ const deleteUser = (req, res) => {
     })
 }
 
+// This controller contains the logic for logging in 
+
 const validateUser = (req, res) => {
   let loginCredentials = req.body;
   usersModel.validateUser(loginCredentials.username)
@@ -87,7 +92,6 @@ const validateUser = (req, res) => {
       let user = result[0].dataValues
 
       if(loginCredentials.admin && user.role !== 'admin') {
-        console.log('User not authorized')
         throw new Error('User not authorized')
       }
       let actualHash = user.hash;
@@ -95,6 +99,7 @@ const validateUser = (req, res) => {
 
       const isValid = authHelpers.validPassword(req.body.password, actualHash, actualSalt);
 
+      // Delete the hashes and salts before sending request to client
       delete user.hash;
       delete user.salt;
 
@@ -102,7 +107,6 @@ const validateUser = (req, res) => {
         const tokenObject = authHelpers.issueJWT(user);
         res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, user });
     } else {
-        console.log('you entered the wrong password')
         throw new Error('you entered the wrong password')
     }
     })

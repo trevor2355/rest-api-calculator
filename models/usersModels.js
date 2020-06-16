@@ -68,21 +68,6 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   return users;
 }
 
-// const users = await User.findAll({
-//   where: {
-//     [Op.or]: [
-//       sequelize.where(
-//         sequelize.cast(sequelize.col('User.uuid'), 'varchar'),
-//         {[Op.like]: `%${'300'}%`},
-//       ),
-//       sequelize.where(
-//         sequelize.cast(sequelize.col('User.balance'), 'varchar'),
-//         {[Op.like]: `%${'300'}%`},
-//       ),
-//     ]
-//   },
-// });
-
 const selectUser = async (id) => {
   const user = await User.findAll({
     where: {
@@ -114,6 +99,8 @@ const deleteUser = async (id) => {
   });
   return user;
 }
+
+// This is used to look up a user by username (used when logging in)
 
 const validateUser = async (username) => {
   const user = await User.findAll({

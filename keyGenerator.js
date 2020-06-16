@@ -1,18 +1,19 @@
-// file: createKey.js
-// https://github.com/zachgoll/making-sense-of-public-key-cryptography/blob/master/createKey.js
+// This file is run with the npm run newKey command, it is used to make a key pair in the root of this project,
+// The key pair is used to validate JWT from user requests.
+
 const crypto = require('crypto');
 const fs = require('fs');
 function genKeyPair() {
     // Generates an object where the keys are stored in properties `privateKey` and `publicKey`
     const keyPair = crypto.generateKeyPairSync('rsa', {
-        modulusLength: 4096, // bits - standard for RSA keys
+        modulusLength: 4096,
         publicKeyEncoding: {
-            type: 'pkcs1', // "Public Key Cryptography Standards 1" 
-            format: 'pem' // Most common formatting choice
+            type: 'pkcs1', 
+            format: 'pem' 
         },
         privateKeyEncoding: {
-            type: 'pkcs1', // "Public Key Cryptography Standards 1"
-            format: 'pem' // Most common formatting choice
+            type: 'pkcs1',
+            format: 'pem' 
         }
     });
     // Create the public key file

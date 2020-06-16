@@ -1,6 +1,8 @@
 const { Sequelize, Op } = require('sequelize');
 const sequelize = require('../db/connection.js')
 
+// This function performs the calculations needed for pagination
+
 const paginate = ({ page, pageSize }) => {
   if (!page) {
     page = 0
@@ -17,6 +19,8 @@ const paginate = ({ page, pageSize }) => {
   };
 };
 
+// This function will use the filterFields and searchTerm to create the sequelize object needed to perform the database query
+
 const filter = ( searchTerm, fields, modelString ) => {
   //if there is no search term return an empty object
   if (!searchTerm) {
@@ -25,19 +29,17 @@ const filter = ( searchTerm, fields, modelString ) => {
 
   let filterBy = [];
   
-  //for each field create a new object that has the field as the key with the value of an object with
-  // an [Op.like] key set to the value of the search term surronded by percents`
   for (var i = 0; i < fields.length; i++) {
-    if (fields[i] !== 'id' || fields[i] !== 'password') {
-      let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`})
-      filterBy.push(fieldfunc)
-    }
+    let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`})
+    filterBy.push(fieldfunc)
   }
   
   return {
     [Op.or]: filterBy
   }
 }
+
+// This function will parse through the query on the GET request to extract all of the filterFields into an array
 
 const collectFilterFields = (array, num, queryObj) => {
   let currentFilterField = 'filterField' + num;
@@ -48,6 +50,8 @@ const collectFilterFields = (array, num, queryObj) => {
     return array;
   }
 }
+
+// This function will eliminate filterFields that contain sensitive information or are unnecessary
 
 const acceptedAttributes = (attributes) => {
   let acceptableAtrributes = [];
@@ -61,6 +65,8 @@ const acceptedAttributes = (attributes) => {
   }
   return acceptableAtrributes;
 }
+
+// This function will elimate any filterFields that are not fileds of the requested entity
 
 const validateFields = (fields, attributes) => {
   let validatedFields = fields.filter(field => attributes.includes(field));
