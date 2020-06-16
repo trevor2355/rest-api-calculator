@@ -44,8 +44,12 @@ User.init({
   }
 }, {
   sequelize,
-  modelName: 'User'
+  modelName: 'User',
+  paranoid: true,
+  timestamps: true,
+  deletedAt: 'deleted_At'
 })
+
 
 const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   let attributes = helpers.acceptedAttributes(Object.keys(User.rawAttributes));
@@ -57,7 +61,7 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   }
   const users = await User.findAll({
     where: {
-      ...helpers.filter(searchTerm, validatedFilterFields)
+      ...helpers.filter(searchTerm, validatedFilterFields, 'User')
     },
     ...helpers.paginate({ page, pageSize })
   });
@@ -95,6 +99,8 @@ const deleteUser = async (id) => {
   });
   return user;
 }
+
+// This is used to look up a user by username (used when logging in)
 
 const validateUser = async (username) => {
   const user = await User.findAll({

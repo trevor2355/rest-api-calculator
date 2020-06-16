@@ -44,7 +44,10 @@ Record.init({
   }
 }, {
   sequelize,
-  modelName: 'Record'
+  modelName: 'Record',
+  paranoid: true,
+  timestamps: true,
+  deletedAt: 'deleted_At'
 })
 
 const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
@@ -57,7 +60,7 @@ const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
   }
   const records = await Record.findAll({
     where: {
-      ...helpers.filter(searchTerm, validatedFilterFields)
+      ...helpers.filter(searchTerm, validatedFilterFields, 'Record')
     },
     ...helpers.paginate({ page, pageSize })
   });
@@ -84,7 +87,7 @@ const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filte
   const records = await Record.findAll({
     where: {
       user_id,
-      ...helpers.filter(searchTerm, validatedFilterFields)
+      ...helpers.filter(searchTerm, validatedFilterFields, 'Record')
     },
     ...helpers.paginate({ page, pageSize })
   });

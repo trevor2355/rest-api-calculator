@@ -1,29 +1,23 @@
-// File: ./config/passport
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const fs = require('fs');
 const path = require('path');
 const models = require('../models/usersModels.js');
 
-// Go up one directory, then look for file name
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 
-// The verifying public key
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
-// At a minimum, you must pass the `jwtFromRequest` and `secretOrKey` properties
+// This will extract the token and decrypt it.
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: PUB_KEY,
   algorithms: ['RS256']
 };
 
-// app.js will pass the global passport object here, and this function will configure it
 module.exports = (passport) => {
-    // The JWT payload is passed into the verify callback
     passport.use(new JwtStrategy(options, function(jwt_payload, done) {
-        // Since we are here, the JWT is valid!
-        // We will assign the `sub` property on the JWT to the database ID of user
+        // The JWT is valid!
         let user = models.selectUser(jwt_payload.sub)
           .then(result => {
             let user = result[0].dataValues
@@ -35,33 +29,3 @@ module.exports = (passport) => {
           })
     }));
 }
-
-// module.exports = (passport) => {
-//   // The JWT payload is passed into the verify callback
-//   passport.use(new JwtStrategy(options, function(jwt_payload, done) {
-//       // Since we are here, the JWT is valid!
-//       // We will assign the `sub` property on the JWT to the database ID of user
-//       models.User.findAll({
-//         where: {
-//           id: jwt_payload.sub
-//         }
-//       }, function(err, user) {
-//           console.log('user: ', user)
-          
-//           // This flow look familiar?  It is the same as when we implemented
-//           // the `passport-local` strategy
-//           if (err) {
-//               return done(err, false);
-//           }
-//           if (user) {
-              
-//               // Since we are here, the JWT is valid and our user is valid, so we are authorized!
-//               return done(null, user);
-//           } else {
-//               return done(null, false);
-//           }
-          
-//       });
-      
-//   }));
-// }
