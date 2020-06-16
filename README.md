@@ -11,7 +11,7 @@ All requests should be made to the following url, the endpoints that are availab
 
 To get a valid json web token you will need to send the following request:
 
-### <ins>Login</ins>
+### Login
 
 Request:
 ```
@@ -150,7 +150,7 @@ Body:
 ```
 
 ### Get all User Records
-#### Endpoint: /api/services/:userId/records
+#### Endpoint: /api/users/:userId/records
 
 Request:
 ```
@@ -195,12 +195,166 @@ Body:
 
 ## Endpoints available to Admin Users
 
-#### /api/records
-get all
-get one
-add record
-update record
-delete record
+### Get all Records
+#### Endpoint: /api/records
+
+Request:
+```
+GET /api/records HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: (JSON Web Token)
+Body:
+```
+Successful Response: 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Body:
+[
+    {
+        "id": 1,
+        "uuid": "462d3fc0-af4b-11ea-8e75-c18624ae91c6",
+        "service_id": 1,
+        "user_id": 2,
+        "cost": 2,
+        "user_balance": 198,
+        "service_response": "8",
+        "date": "2020-06-15T21:00:42.217Z",
+        "createdAt": "2020-06-15T21:00:42.301Z",
+        "updatedAt": "2020-06-15T21:00:42.301Z"
+    },
+    {
+        "id": 2,
+        "uuid": "629fcfb0-af4b-11ea-8e75-c18624ae91c6",
+        "service_id": 5,
+        "user_id": 2,
+        "cost": 5,
+        "user_balance": 193,
+        "service_response": "2",
+        "date": "2020-06-15T21:01:29.969Z",
+        "createdAt": "2020-06-15T21:01:30.027Z",
+        "updatedAt": "2020-06-15T21:01:30.027Z"
+    }
+]
+```
+
+### Get specific Record
+#### Endpoint: /api/records/:recordId
+
+Request:
+```
+GET /api/records/4 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: (JSON Web Token)
+Body:
+```
+Successful Response: 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Body:
+[
+    {
+        "id": 4,
+        "uuid": "30fe3f20-af4e-11ea-8e75-c18624ae91c6",
+        "service_id": 1,
+        "user_id": 4,
+        "cost": 2,
+        "user_balance": 398,
+        "service_response": "644",
+        "date": "2020-06-15T21:21:35.174Z",
+        "createdAt": "2020-06-15T21:21:35.250Z",
+        "updatedAt": "2020-06-15T21:21:35.250Z"
+    }
+]
+```
+
+### Add a Record
+#### Endpoint: /api/records
+
+Request:
+```
+POST /api/users/1/records HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: (JSON Web Token)
+Body:
+{
+	"service_id": 4,
+	"user_id": 3,
+	"cost": 5,
+	"user_balance": 450,
+	"service_response": "22",
+	"date": "2020-06-15T21:21:35.174Z"
+}
+```
+Successful Response: 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Body:
+{
+    "uuid": "7c53b1d0-af6c-11ea-bc6d-5b00c75b9df0",
+    "id": 32,
+    "service_id": 4,
+    "user_id": 3,
+    "cost": 5,
+    "user_balance": 450,
+    "service_response": "22",
+    "date": "2020-06-15T21:21:35.174Z",
+    "updatedAt": "2020-06-16T00:58:26.544Z",
+    "createdAt": "2020-06-16T00:58:26.544Z"
+}
+```
+
+### Update User
+#### Endpoint: /api/records/:recordId
+
+Request:
+```
+PUT /api/records/4 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: (JSON Web Token)
+Body:
+{
+	"service_id": 4,
+	"cost": 5,
+	"user_balance": 450,
+}*
+```
+*Note that you can include 1 or all of the following key value pairs in the body of the request (service_id, user_id, cost, user_balance, service_response, date).
+
+Successful Response: 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Body:
+[
+    1
+]
+```
+
+### Delete Record
+#### Endpoint: /api/records/:recordId
+
+Request:
+```
+DELETE /api/records/32 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: (JSON Web Token)
+Body:
+```
+Successful Response: 
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+Body: 1
+```
+
 
 #### /api/services
 Get all
