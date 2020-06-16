@@ -1005,6 +1005,12 @@ You should see 'Connection has been established successfully.' logged in the con
 npx sequelize-cli db:migrate
 ```
 
+3. Run the following command
+```
+npm run newKey
+```
+This command will create a public and private key file in the root of your project, you will need these files to validate JSON Web Tokens.
+
 The back end is no ready to go, click here to view instructions for downloading and setting up the front end of this project. [link to front-end repo](https://github.com/trevor2355/rest-api-calculator-vue)
 
 ## Deployment
@@ -1020,6 +1026,3 @@ I deployed this project using Docker and AWS.
 * PostgreSQL
 * Docker
 * AWS (Deployment)
-
-## License
-MIT license [here](https://github.com/trevor2355/j-stats/blob/master/LICENSE)
