@@ -276,7 +276,7 @@ Body:
 
 Request:
 ```
-POST /api/users/1/records HTTP/1.1
+POST /api/records HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: (JSON Web Token)
@@ -292,7 +292,7 @@ Body:
 ```
 Successful Response: 
 ```
-HTTP/1.1 201 Created
+HTTP/1.1 201 CREATED
 Content-Type: application/json
 Body:
 {
@@ -309,7 +309,7 @@ Body:
 }
 ```
 
-### Update User
+### Update Record
 #### Endpoint: /api/records/:recordId
 
 Request:
@@ -320,9 +320,8 @@ Content-Type: application/json
 Authorization: (JSON Web Token)
 Body:
 {
-	"service_id": 4,
-	"cost": 5,
-	"user_balance": 450,
+	"service_id": 6,
+	"cost": 7
 }*
 ```
 *Note that you can include 1 or all of the following key value pairs in the body of the request (service_id, user_id, cost, user_balance, service_response, date).
@@ -348,6 +347,8 @@ Content-Type: application/json
 Authorization: (JSON Web Token)
 Body:
 ```
+*Note all resources are soft deleted
+
 Successful Response: 
 ```
 HTTP/1.1 200 OK
@@ -495,6 +496,8 @@ Content-Type: application/json
 Authorization: (JSON Web Token)
 Body:
 ```
+*Note all resources are soft deleted
+
 Successful Response: 
 ```
 HTTP/1.1 200 OK
@@ -691,6 +694,8 @@ Content-Type: application/json
 Authorization: (JSON Web Token)
 Body:
 ```
+*Note all resources are soft deleted
+
 Successful Response: 
 ```
 HTTP/1.1 200 OK
@@ -807,7 +812,7 @@ Body:
 ]
 ```
 
-If you would like to filter by 2 fields enter the second field into 'filterField2', etc... 
+If you would like to filter by 2 or more fields enter the second field into 'filterField2', etc... 
 
 #### Endpoint: /api/records?searchTerm=50&filterField1=uuid&filterField2=user_balance&filterField3=service_response
 
@@ -864,7 +869,7 @@ Body:
 ]
 ```
 
-Any filterField parameter that is not in subsequent order will be ignored, it will not however result in failed request, additionally any filterField query parameters that do not exist as fields of the given entity will also be ignored.
+Any filterField parameter that is not in subsequent order will be ignored, it will not however result in a failed request, additionally any filterField query parameter that does not exist as a field of the given entity will also be ignored.
 
 #### Endpoint: /api/records?searchTerm=50&filterField1=uuid&filterField2=user_balance&filterField3=service_response
 
