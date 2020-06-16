@@ -11,7 +11,7 @@ All requests should be made to the following url, the endpoints that are availab
 
 To get a valid json web token you will need to send the following request:
 
-### Login
+### Endpoint: /login
 
 Request:
 ```
