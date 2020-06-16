@@ -1,17 +1,18 @@
 # rest-api-calculator-backend
 This is a simple web platform that provides simple calculator functionality (addition, subtraction, multiplication, division, square root, and also random string generation) to a user.  Each functionality has a specific cost that is recorded by the platform and can be managed by an admin user.
 
-## API Instructions
+# API Instructions
 
 This API is for registered users and admin users, you will need a valid account in order to obtain a token that will give you access to the API.
 
-### Getting started
+## Getting started
 All requests should be made to the following url, the endpoints that are available are specified below in the documentation.
-#### Getting your valid json web token
+## Getting your valid json web token
 
 To get a valid json web token you will need to send the following request:
 
-##### Login
+### Login
+
 Request:
 ```
 POST /login HTTP/1.1
@@ -48,12 +49,12 @@ Body:
 
 You now can copy this token and include it on all other requests in the 'Authorization' header.  You also have your id, that can be used to get specific details about your account.
 
-### Endpoints available to Users
+## Endpoints available to Users
 
-#### /api/services
 
-##### Get all Services
-Endpoint: /api/services
+### Get all Services
+#### Endpoint: /api/services
+
 Request:
 ```
 GET /api/services HTTP/1.1
@@ -89,8 +90,9 @@ Body:
 ]
 ```
 
-##### Get specific Service
-Endpoint: /api/services/:serviceId
+### Get specific Service
+#### Endpoint: /api/services/:serviceId
+
 Request:
 ```
 GET /api/services/1 HTTP/1.1
@@ -117,10 +119,9 @@ Body:
 ]
 ```
 
-#### /api/users
+### Get specific User
+#### Endpoint: /api/users/:userId
 
-##### Get specific User
-Endpoint: /api/users/:userId
 Request:
 ```
 GET /api/users/1 HTTP/1.1
@@ -148,8 +149,9 @@ Body:
 ]
 ```
 
-##### Get all User Records
-Endpoint: /api/services/:userId/records
+### Get all User Records
+#### Endpoint: /api/services/:userId/records
+
 Request:
 ```
 GET /api/users/1/records HTTP/1.1
@@ -191,7 +193,7 @@ Body:
 ]
 ```
 
-### Endpoints available to Admin Users
+## Endpoints available to Admin Users
 
 #### /api/records
 get all
