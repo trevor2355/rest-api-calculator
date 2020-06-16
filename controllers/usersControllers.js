@@ -8,10 +8,17 @@ const getAllUsers = (req, res) => {
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
   usersModel.selectAllUsers(page, pageSize, searchTerm, filterFields)
-    .then(users => {
+    //Delete the hashes and salts before sending request to client
+    .then(unsafeUsers => {
+      let users = unsafeUsers.map(user => {
+        delete user.dataValues.hash;
+        delete user.dataValues.salt;
+        return user
+      });
       res.status(200).json(users)
     })
     .catch(err => {
+      console.log(err)
       res.status(500).json({ err })
     })
 }
@@ -19,7 +26,12 @@ const getAllUsers = (req, res) => {
 const getUser = (req, res) => {
   let userId = req.params.userId;
   usersModel.selectUser(userId)
-    .then(user => {
+    .then(unsafeUsers => {
+      let user = unsafeUsers.map(user => {
+        delete user.dataValues.hash;
+        delete user.dataValues.salt;
+        return user
+      });
       res.status(200).json(user)
     })
     .catch(err => {
@@ -31,13 +43,13 @@ const getUser = (req, res) => {
 const postUser = (req, res) => {
   let user = req.body;
   let saltHash = authHelpers.genPassword(req.body.password);
-    
   user.salt = saltHash.salt;
   user.hash = saltHash.hash;
   delete user.password;
-  console.log('user: ', user)
   usersModel.insertUser(user)
     .then(result => {
+      delete result.dataValues.hash
+      delete result.dataValues.salt
       res.status(201).json(result)
     })
     .catch(err => {
@@ -81,15 +93,13 @@ const validateUser = (req, res) => {
       let actualHash = user.hash;
       let actualSalt = user.salt;
 
-      console.log('user:', user)
-
       const isValid = authHelpers.validPassword(req.body.password, actualHash, actualSalt);
 
-      console.log('isValid: ', isValid)
+      delete user.hash;
+      delete user.salt;
 
       if (isValid) {
         const tokenObject = authHelpers.issueJWT(user);
-        console.log('Token: ', tokenObject);
         res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, user });
     } else {
         console.log('you entered the wrong password')

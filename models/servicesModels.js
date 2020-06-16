@@ -35,7 +35,10 @@ Service.init({
   }
 }, {
   sequelize,
-  modelName: 'Service'
+  modelName: 'Service',
+  paranoid: true,
+  timestamps: true,
+  deletedAt: 'deleted_At'
 })
 
 const selectAllServices = async (page, pageSize, searchTerm, filterFields) => {
@@ -48,7 +51,7 @@ const selectAllServices = async (page, pageSize, searchTerm, filterFields) => {
   }
   const services = await Service.findAll({
     where: {
-      ...helpers.filter(searchTerm, validatedFilterFields)
+      ...helpers.filter(searchTerm, validatedFilterFields, 'Service')
     },
     ...helpers.paginate({ page, pageSize })
   });

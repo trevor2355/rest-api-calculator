@@ -1,4 +1,5 @@
 const { Sequelize, Op } = require('sequelize');
+const sequelize = require('../db/connection.js')
 
 const paginate = ({ page, pageSize }) => {
   if (!page) {
@@ -16,7 +17,7 @@ const paginate = ({ page, pageSize }) => {
   };
 };
 
-const filter = ( searchTerm, fields) => {
+const filter = ( searchTerm, fields, modelString ) => {
   //if there is no search term return an empty object
   if (!searchTerm) {
     return {}
@@ -28,12 +29,8 @@ const filter = ( searchTerm, fields) => {
   // an [Op.like] key set to the value of the search term surronded by percents`
   for (var i = 0; i < fields.length; i++) {
     if (fields[i] !== 'id' || fields[i] !== 'password') {
-      let fieldObj = {
-        [fields[i]]: {
-          [Op.like]: `%${searchTerm}%`
-        }
-      }
-      filterBy.push(fieldObj)
+      let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`})
+      filterBy.push(fieldfunc)
     }
   }
   
@@ -56,7 +53,7 @@ const acceptedAttributes = (attributes) => {
   let acceptableAtrributes = [];
   for (var i = 0; i < attributes.length; i++) {
     let atr = attributes[i];
-    if (atr === 'id' || atr === 'password' || atr === 'createdAt' || atr === 'updatedAt') {
+    if (atr === 'hash' || atr === 'salt' || atr === 'createdAt' || atr === 'updatedAt') {
       continue
     } else {
       acceptableAtrributes.push(atr);

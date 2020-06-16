@@ -3,7 +3,6 @@ const axios = require('axios');
 const helpers = require('../helpers/helpers.js');
 
 const getAllServices = (req, res) => {
-  console.log('req.user: ', req.user)
   let page = req.query.page;
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm

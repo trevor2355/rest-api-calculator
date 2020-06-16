@@ -44,8 +44,12 @@ User.init({
   }
 }, {
   sequelize,
-  modelName: 'User'
+  modelName: 'User',
+  paranoid: true,
+  timestamps: true,
+  deletedAt: 'deleted_At'
 })
+
 
 const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   let attributes = helpers.acceptedAttributes(Object.keys(User.rawAttributes));
@@ -57,12 +61,27 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   }
   const users = await User.findAll({
     where: {
-      ...helpers.filter(searchTerm, validatedFilterFields)
+      ...helpers.filter(searchTerm, validatedFilterFields, 'User')
     },
     ...helpers.paginate({ page, pageSize })
   });
   return users;
 }
+
+// const users = await User.findAll({
+//   where: {
+//     [Op.or]: [
+//       sequelize.where(
+//         sequelize.cast(sequelize.col('User.uuid'), 'varchar'),
+//         {[Op.like]: `%${'300'}%`},
+//       ),
+//       sequelize.where(
+//         sequelize.cast(sequelize.col('User.balance'), 'varchar'),
+//         {[Op.like]: `%${'300'}%`},
+//       ),
+//     ]
+//   },
+// });
 
 const selectUser = async (id) => {
   const user = await User.findAll({
