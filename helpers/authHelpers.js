@@ -6,7 +6,6 @@ const path = require('path');
 // This function will validate a users inputed password when logging in 
 
 function validPassword(password, hash, salt) {
-  console.log(password, hash, salt)
     var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
     return hash === hashVerify;
 }

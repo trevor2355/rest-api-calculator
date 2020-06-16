@@ -1,0 +1,6 @@
+node_modules
+.git
+npm-debug.log
+.env
+id_rsa_priv.pem
+id_rsa_pub.pem
