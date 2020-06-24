@@ -1,12 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
 require('dotenv').config();
-const usersRoutes = require('./routes/usersRoutes.js')
-const servicesRoutes = require('./routes/servicesRoutes.js')
-const recordsRoutes = require('./routes/recordsRoutes.js')
-const loginRoutes = require('./routes/loginRoutes.js')
+const routes = require('./routes.js');
 const passport = require('passport');
 require('./config/passport')(passport);
 
@@ -27,9 +24,6 @@ app.listen(PORT, () => {
 })
 
 //handle the api routes here
-app.use('/api/users', usersRoutes)
-app.use('/api/services', servicesRoutes)
-app.use('/api/records', recordsRoutes)
-app.use('/login', loginRoutes)
+app.use('/api', routes)
 
 const db = require('./db/connection.js');

@@ -1,4 +1,4 @@
-const usersService = require('../Services/usersService.js');
+const usersServices = require('../models/usersServices.js');
 const helpers = require('../helpers/helpers.js');
 const authHelpers = require('../helpers/authHelpers.js')
 
@@ -7,7 +7,7 @@ const getAllUsers = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  usersService.selectAllUsers(page, pageSize, searchTerm, filterFields)
+  usersServices.selectAllUsers(page, pageSize, searchTerm, filterFields)
     // Delete the hashes and salts before sending request to client
     .then(unsafeUsers => {
       let users = unsafeUsers.map(user => {
@@ -25,7 +25,7 @@ const getAllUsers = (req, res) => {
 
 const getUser = (req, res) => {
   let userId = req.params.userId;
-  usersService.selectUser(userId)
+  usersServices.selectUser(userId)
     .then(unsafeUsers => {
       // Delete the hashes and salts before sending request to client
       let user = unsafeUsers.map(user => {
@@ -48,7 +48,7 @@ const postUser = (req, res) => {
   user.salt = saltHash.salt;
   user.hash = saltHash.hash;
   delete user.password;
-  usersService.insertUser(user)
+  usersServices.insertUser(user)
     // Delete the hashes and salts before sending request to client
     .then(result => {
       delete result.dataValues.hash
@@ -63,7 +63,7 @@ const postUser = (req, res) => {
 const updateUser = (req, res) => {
   let userId = req.params.userId;
   let update = req.body;
-  usersService.updateUser(userId, update)
+  usersServices.updateUser(userId, update)
     .then(result => {
       res.status(201).json(result)
     })
@@ -74,7 +74,7 @@ const updateUser = (req, res) => {
 
 const deleteUser = (req, res) => {
   let userId = req.params.userId;
-  usersService.deleteUser(userId)
+  usersServices.deleteUser(userId)
     .then(result => {
       res.status(200).json(result)
     })
@@ -87,7 +87,8 @@ const deleteUser = (req, res) => {
 
 const validateUser = (req, res) => {
   let loginCredentials = req.body;
-  usersService.validateUser(loginCredentials.username)
+  console.log(loginCredentials)
+  usersServices.validateUser(loginCredentials.username)
     .then(result => {
       let user = result[0].dataValues
 
