@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-var cors = require('cors')
+const cors = require('cors')
 require('dotenv').config();
 const usersRoutes = require('./routes/usersRoutes.js')
 const servicesRoutes = require('./routes/servicesRoutes.js')

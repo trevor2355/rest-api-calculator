@@ -69,7 +69,7 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
 }
 
 const selectUser = async (id) => {
-  const user = await User.findAll({
+  const user = await User.findOne({
     where: {
       id
     }

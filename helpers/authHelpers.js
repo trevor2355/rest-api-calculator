@@ -6,15 +6,15 @@ const path = require('path');
 // This function will validate a users inputed password when logging in 
 
 function validPassword(password, hash, salt) {
-    var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    let hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
     return hash === hashVerify;
 }
 
 // This function will generate a salt and a hash to store in the database when a user is created
 
 function genPassword(password) {
-    var salt = crypto.randomBytes(32).toString('hex');
-    var genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    let salt = crypto.randomBytes(32).toString('hex');
+    let genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
     return {
       salt: salt,
       hash: genHash
@@ -51,7 +51,7 @@ const checkAdminRole = function (req, res, next) {
   }
 }
 
-// This middleware functino will check to maker sure a user is only requesting their personal data
+// This middleware function will check to maker sure a user is only requesting their personal data
 
 const checkUserRequestIsAllowed = function (req, res, next) {
   if(req.user.role === 'admin') {

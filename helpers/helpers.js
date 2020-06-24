@@ -29,7 +29,7 @@ const filter = ( searchTerm, fields, modelString ) => {
 
   let filterBy = [];
   
-  for (var i = 0; i < fields.length; i++) {
+  for (let i = 0; i < fields.length; i++) {
     let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`})
     filterBy.push(fieldfunc)
   }
@@ -55,7 +55,7 @@ const collectFilterFields = (array, num, queryObj) => {
 
 const acceptedAttributes = (attributes) => {
   let acceptableAtrributes = [];
-  for (var i = 0; i < attributes.length; i++) {
+  for (let i = 0; i < attributes.length; i++) {
     let atr = attributes[i];
     if (atr === 'hash' || atr === 'salt' || atr === 'createdAt' || atr === 'updatedAt') {
       continue
