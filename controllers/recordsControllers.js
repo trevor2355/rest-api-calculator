@@ -1,4 +1,4 @@
-const recordsModel = require('../models/recordsModels.js');
+const recordsServices = require('../services/recordsServices.js');
 const helpers = require('../helpers/helpers.js');
 
 const getAllRecords = (req, res) => {
@@ -6,7 +6,7 @@ const getAllRecords = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  recordsModel.selectAllRecords(page, pageSize, searchTerm, filterFields)
+  recordsServices.selectAllRecords(page, pageSize, searchTerm, filterFields)
     .then(records => {
       res.status(200).json(records)
     })
@@ -18,7 +18,7 @@ const getAllRecords = (req, res) => {
 
 const getRecord = (req, res) => {
   let recordId = req.params.recordId;
-  recordsModel.selectRecord(recordId)
+  recordsServices.selectRecord(recordId)
   .then(record => {
     res.status(200).json(record)
   })
@@ -34,7 +34,7 @@ const getUserRecords = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  recordsModel.selectAllRecordsOfUser(userId, page, pageSize, searchTerm, filterFields)
+  recordsServices.selectAllRecordsOfUser(userId, page, pageSize, searchTerm, filterFields)
     .then(user => {
       res.status(200).json(user)
     })
@@ -46,7 +46,7 @@ const getUserRecords = (req, res) => {
 
 const postRecord = (req, res) => {
   let record = req.body;
-  recordsModel.insertRecord(record)
+  recordsServices.insertRecord(record)
   .then(result => {
     res.status(201).json(result)
   })
@@ -63,7 +63,7 @@ const updateRecord = (req, res) => {
   delete update.uuid
   console.log('recordID: ', recordId)
   console.log('update: ', update)
-  recordsModel.updateRecord(recordId, update)
+  recordsServices.updateRecord(recordId, update)
   .then(result => {
     console.log('result: ', result)
     res.status(201).json(result)
@@ -76,7 +76,7 @@ const updateRecord = (req, res) => {
 
 const deleteRecord = (req, res) => {
   let recordId = req.params.recordId;
-  recordsModel.deleteRecord(recordId)
+  recordsServices.deleteRecord(recordId)
   .then(result => {
     res.status(200).json(result)
   })

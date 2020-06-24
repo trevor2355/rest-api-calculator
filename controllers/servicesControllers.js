@@ -1,4 +1,4 @@
-const servicesModel = require('../models/servicesModels.js');
+const servicesServices = require('../services/servicesServices.js');
 const axios = require('axios');
 const helpers = require('../helpers/helpers.js');
 
@@ -7,7 +7,7 @@ const getAllServices = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  servicesModel.selectAllServices(page, pageSize, searchTerm, filterFields)
+  servicesServices.selectAllServices(page, pageSize, searchTerm, filterFields)
     .then(services => {
       res.status(200).json(services)
     })
@@ -19,7 +19,7 @@ const getAllServices = (req, res) => {
 
 const getService = (req, res) => {
   let serviceId = req.params.serviceId;
-  servicesModel.selectService(serviceId)
+  servicesServices.selectService(serviceId)
   .then(service => {
     res.status(200).json(service)
   })
@@ -31,7 +31,7 @@ const getService = (req, res) => {
 
 const postService = (req, res) => {
   let service = req.body;
-  servicesModel.insertService(service)
+  servicesServices.insertService(service)
   .then(result => {
     res.status(201).json(result)
   })
@@ -44,7 +44,7 @@ const postService = (req, res) => {
 const updateService = (req, res) => {
   let serviceId = req.params.serviceId;
   let update = req.body;
-  servicesModel.updateService(serviceId, update)
+  servicesServices.updateService(serviceId, update)
   .then(result => {
     res.status(201).json(result)
   })
@@ -56,7 +56,7 @@ const updateService = (req, res) => {
 
 const deleteService = (req, res) => {
   let serviceId = req.params.serviceId;
-  servicesModel.deleteService(serviceId)
+  servicesServices.deleteService(serviceId)
   .then(result => {
     res.status(200).json(result)
   })

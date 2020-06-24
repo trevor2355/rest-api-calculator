@@ -2,7 +2,7 @@ const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const fs = require('fs');
 const path = require('path');
-const services = require('../models/usersServices.js');
+const services = require('../services/usersServices.js');
 
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 

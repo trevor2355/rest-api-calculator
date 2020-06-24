@@ -1,4 +1,4 @@
-const usersServices = require('../models/usersServices.js');
+const usersServices = require('../services/usersServices.js');
 const helpers = require('../helpers/helpers.js');
 const authHelpers = require('../helpers/authHelpers.js')
 
