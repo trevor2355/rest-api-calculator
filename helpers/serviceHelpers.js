@@ -3,7 +3,7 @@ const axios = require('axios');
 const addition = async (body) => {
   console.log('addition');
   return {
-    result: await body.additionVal1 + body.additionVal2
+    result: await parseFloat(body.additionVal1) + parseFloat(body.additionVal2)
   };
 }
 
@@ -40,8 +40,8 @@ const square_root = async (body) => {
 }
 
 const random_string = async (body) => {
-  let length = body.generateRandomStringVal
-  console.log(length)
+  let length = body.randomStringGeneratorVal
+  console.log('lengthy: ', length)
   let request = {
     jsonrpc: '2.0',
     method: 'generateStrings',
