@@ -41,8 +41,6 @@ router.delete('/services/:serviceId', passport.authenticate('jwt', { session: fa
 
 router.post('/services/request/:serviceId', passport.authenticate('jwt', { session: false }), servicesController.request);
 
-router.post('/services/randomstringgenerator', passport.authenticate('jwt', { session: false }), servicesController.requestRandomString);
-
 
 // Users Routes
 

@@ -77,7 +77,7 @@ const selectAllRecords = async (page, pageSize, searchTerm, filterFields, sortBy
 };
 
 const selectRecord = async (id) => {
-  const record = await Record.findAll({
+  const record = await Record.findOne({
     where: {
       id
     }

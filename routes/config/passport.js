@@ -20,7 +20,7 @@ module.exports = (passport) => {
         // The JWT is valid!
         let user = services.selectUser(jwt_payload.sub)
           .then(result => {
-            let user = result[0].dataValues;
+            let user = result.dataValues;
             done(null, user);
           })
           .catch(err => {

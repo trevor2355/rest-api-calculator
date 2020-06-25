@@ -32,13 +32,9 @@ const getAllUsers = (req, res) => {
 const getUser = (req, res) => {
   let userId = req.params.userId;
   usersServices.selectUser(userId)
-    .then(unsafeUsers => {
-      // Delete the hashes and salts before sending request to client
-      let user = unsafeUsers.map(user => {
-        delete user.dataValues.hash;
-        delete user.dataValues.salt;
-        return user;
-      });
+    .then(user => {
+      delete user.dataValues.hash;
+      delete user.dataValues.salt;
       res.status(200).json(user);
     })
     .catch(err => {

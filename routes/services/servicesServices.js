@@ -68,7 +68,7 @@ const selectAllServices = async (page, pageSize, searchTerm, filterFields, sortB
 };
 
 const selectService = async (id) => {
-  const service = await Service.findAll({
+  const service = await Service.findOne({
     where: {
       id
     }
