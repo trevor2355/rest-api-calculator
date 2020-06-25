@@ -36,6 +36,11 @@ router.put('/services/:serviceId', passport.authenticate('jwt', { session: false
 
 router.delete('/services/:serviceId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, servicesController.deleteService);
 
+
+// Request Services Routes
+
+router.post('/services/request/:serviceId', passport.authenticate('jwt', { session: false }), servicesController.request)
+
 router.post('/services/randomstringgenerator', passport.authenticate('jwt', { session: false }), servicesController.requestRandomString)
 
 

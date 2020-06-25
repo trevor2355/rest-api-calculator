@@ -1,6 +1,9 @@
+const recordsServices = require('../services/recordsServices.js');
 const servicesServices = require('../services/servicesServices.js');
+const usersServices = require('../services/usersServices.js');
 const axios = require('axios');
 const helpers = require('../helpers/helpers.js');
+const requests = require('../helpers/serviceHelpers.js')
 
 const getAllServices = (req, res) => {
   let page = req.query.page;
@@ -96,11 +99,55 @@ const requestRandomString = (req, res) => {
     })
 }
 
+const request = (req, res) => {
+  let serviceId = req.params.serviceId
+  let user = req.user;
+  servicesServices.selectService(serviceId)
+  .then(service => {
+    requests[service[0].type](req.body)
+    .then(serviceResponse => {
+      let cost = service[0].cost
+      let newBalance = user.balance - cost;
+      usersServices.updateUser(user.id, { balance: newBalance })
+      .then(update => {
+        if (!update[0]) {
+          throw new Error
+        }
+        let record = {
+          user_id: user.id,
+          service_id: serviceId,
+          user_balance: newBalance,
+          cost: cost,
+          service_response: serviceResponse.result,
+          date: new Date()
+        }
+        recordsServices.insertRecord(record)
+        .then(record => {
+          res.status(200).json(serviceResponse)
+        })
+        .catch(err => {
+          res.status(500).json({ message: 'error inserting new record into records table'})
+        })
+      })
+      .catch(err => {
+        res.status(500).json({ message: 'error updating the user balance' })
+      })
+    })
+    .catch(err => {
+      res.status(500).json({message: 'error completing the requested service' })
+    })
+  })
+  .catch(err => {
+    res.status(500).json({ message: 'error selecting the service from the database' })
+  })
+}
+
 module.exports = {
   getAllServices,
   getService,
   postService,
   updateService,
   deleteService,
-  requestRandomString
+  requestRandomString,
+  request
 }
