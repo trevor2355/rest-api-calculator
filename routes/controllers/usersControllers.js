@@ -5,16 +5,22 @@ const authHelpers = require('../helpers/authHelpers.js')
 const getAllUsers = (req, res) => {
   let page = req.query.page;
   let pageSize = req.query.pageSize;
-  let searchTerm = req.query.searchTerm
+  let searchTerm = req.query.searchTerm;
+  let sortBy = req.query.sortBy;
+  let order = req.query.order;
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  usersServices.selectAllUsers(page, pageSize, searchTerm, filterFields)
+  usersServices.selectAllUsers(page, pageSize, searchTerm, filterFields, sortBy, order)
     // Delete the hashes and salts before sending request to client
     .then(unsafeUsers => {
-      let users = unsafeUsers.map(user => {
+      let safeUsers = unsafeUsers.rows.map(user => {
         delete user.dataValues.hash;
         delete user.dataValues.salt;
         return user
       });
+      let users = {
+        count: unsafeUsers.count,
+        rows: safeUsers
+      }
       res.status(200).json(users)
     })
     .catch(err => {
@@ -87,7 +93,6 @@ const deleteUser = (req, res) => {
 
 const validateUser = (req, res) => {
   let loginCredentials = req.body;
-  console.log(loginCredentials)
   usersServices.validateUser(loginCredentials.username)
     .then(result => {
       let user = result[0].dataValues

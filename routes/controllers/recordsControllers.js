@@ -6,7 +6,9 @@ const getAllRecords = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  recordsServices.selectAllRecords(page, pageSize, searchTerm, filterFields)
+  let sortBy = req.query.sortBy;
+  let order = req.query.order;
+  recordsServices.selectAllRecords(page, pageSize, searchTerm, filterFields, sortBy, order)
     .then(records => {
       res.status(200).json(records)
     })
@@ -32,11 +34,13 @@ const getUserRecords = (req, res) => {
   let userId = req.params.userId
   let page = req.query.page;
   let pageSize = req.query.pageSize;
-  let searchTerm = req.query.searchTerm
+  let searchTerm = req.query.searchTerm;
+  let sortBy = req.query.sortBy;
+  let order = req.query.order;
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  recordsServices.selectAllRecordsOfUser(userId, page, pageSize, searchTerm, filterFields)
-    .then(user => {
-      res.status(200).json(user)
+  recordsServices.selectAllRecordsOfUser(userId, page, pageSize, searchTerm, filterFields, sortBy, order)
+    .then(records => {
+      res.status(200).json(records)
     })
     .catch(err => {
       console.log(err)
@@ -61,11 +65,8 @@ const updateRecord = (req, res) => {
   let update = req.body;
   delete update.id
   delete update.uuid
-  console.log('recordID: ', recordId)
-  console.log('update: ', update)
   recordsServices.updateRecord(recordId, update)
   .then(result => {
-    console.log('result: ', result)
     res.status(201).json(result)
   })
   .catch(err => {

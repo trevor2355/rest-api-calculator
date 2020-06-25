@@ -50,7 +50,7 @@ Record.init({
   deletedAt: 'deleted_At'
 })
 
-const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
+const selectAllRecords = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
   let validatedFilterFields;
   if (filterFields.length === 0) {
@@ -58,10 +58,19 @@ const selectAllRecords = async (page, pageSize, searchTerm, filterFields) => {
   } else {
     validatedFilterFields = helpers.validateFields(filterFields, attributes)
   }
-  const records = await Record.findAll({
+  if (!sortBy) {
+    sortBy = 'id'
+  }
+  if (!order) {
+    order = 'ASC'
+  }
+  const records = await Record.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'Record')
     },
+    order: [
+      [sortBy, order]
+    ],
     ...helpers.paginate({ page, pageSize })
   });
   return records;
@@ -76,7 +85,7 @@ const selectRecord = async (id) => {
   return record;
 }
 
-const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filterFields) => {
+const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
   let validatedFilterFields;
   if (filterFields.length === 0) {
@@ -84,11 +93,20 @@ const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filte
   } else {
     validatedFilterFields = helpers.validateFields(filterFields, attributes)
   }
-  const records = await Record.findAll({
+  if (!sortBy) {
+    sortBy = 'id'
+  }
+  if (!order) {
+    order = 'ASC'
+  }
+  const records = await Record.findAndCountAll({
     where: {
       user_id,
       ...helpers.filter(searchTerm, validatedFilterFields, 'Record')
     },
+    order: [
+      [sortBy, order]
+    ],
     ...helpers.paginate({ page, pageSize })
   });
   return records;

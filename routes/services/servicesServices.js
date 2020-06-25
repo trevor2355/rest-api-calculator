@@ -41,7 +41,7 @@ Service.init({
   deletedAt: 'deleted_At'
 })
 
-const selectAllServices = async (page, pageSize, searchTerm, filterFields) => {
+const selectAllServices = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Service.rawAttributes));
   let validatedFilterFields;
   if (filterFields.length === 0) {
@@ -49,10 +49,19 @@ const selectAllServices = async (page, pageSize, searchTerm, filterFields) => {
   } else {
     validatedFilterFields = helpers.validateFields(filterFields, attributes)
   }
-  const services = await Service.findAll({
+  if (!sortBy) {
+    sortBy = 'id'
+  }
+  if (!order) {
+    order = 'ASC'
+  }
+  const services = await Service.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'Service')
     },
+    order: [
+      [sortBy, order]
+    ],
     ...helpers.paginate({ page, pageSize })
   });
   return services;

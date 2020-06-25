@@ -10,7 +10,9 @@ const getAllServices = (req, res) => {
   let pageSize = req.query.pageSize;
   let searchTerm = req.query.searchTerm
   let filterFields = helpers.collectFilterFields([], 1, req.query);
-  servicesServices.selectAllServices(page, pageSize, searchTerm, filterFields)
+  let sortBy = req.query.sortBy;
+  let order = req.query.order;
+  servicesServices.selectAllServices(page, pageSize, searchTerm, filterFields, sortBy, order)
     .then(services => {
       res.status(200).json(services)
     })

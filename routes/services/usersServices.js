@@ -51,7 +51,7 @@ User.init({
 })
 
 
-const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
+const selectAllUsers = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(User.rawAttributes));
   let validatedFilterFields;
   if (filterFields.length === 0) {
@@ -59,10 +59,19 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields) => {
   } else {
     validatedFilterFields = helpers.validateFields(filterFields, attributes)
   }
-  const users = await User.findAll({
+  if (!sortBy) {
+    sortBy = 'id'
+  }
+  if (!order) {
+    order = 'ASC'
+  }
+  const users = await User.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'User')
     },
+    order: [
+      [sortBy, order]
+    ],
     ...helpers.paginate({ page, pageSize })
   });
   return users;
