@@ -71,36 +71,6 @@ const deleteService = (req, res) => {
   });
 };
 
-//This controller handles requests from the user to generate a random string
-
-// const requestRandomString = (req, res) => {
-//   let length = req.body;
-//   let request = {
-//     jsonrpc: '2.0',
-//     method: 'generateStrings',
-//     params: {
-//       apiKey: process.env.RANDOM_API_KEY,
-//       n: 1,
-//       length: length.length,
-//       characters: 'abcdefghijklmnopqrstuvwxyz',
-//       replacement:true
-//     },
-//     id: 1
-//   };
-//   axios.post('https://api.random.org/json-rpc/2/invoke', request)
-//     .then(function (response) {
-//       if (response.data.error) {
-//         throw new Error(response.data.error.message);
-//       }
-//       let string = response.data.result.random.data[0];
-//       res.status(200).json({ string });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(500).json({ err });
-//     });
-// };
-
 const request = (req, res) => {
   let serviceId = req.params.serviceId;
   let user = req.user;
