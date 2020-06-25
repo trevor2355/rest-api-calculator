@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const services = require('../services/usersServices.js');
 
-const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
+const pathToKey = path.join(__dirname, '../..', 'id_rsa_pub.pem');
 
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 

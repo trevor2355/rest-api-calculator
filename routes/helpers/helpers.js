@@ -1,5 +1,5 @@
 const { Sequelize, Op } = require('sequelize');
-const sequelize = require('../db/connection.js')
+const sequelize = require('../../db/connection.js')
 
 // This function performs the calculations needed for pagination
 

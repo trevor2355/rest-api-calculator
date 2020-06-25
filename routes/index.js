@@ -26,4 +26,4 @@ app.listen(PORT, () => {
 //handle the api routes here
 app.use('/api', routes)
 
-const db = require('./db/connection.js');
+const db = require('../db/connection.js');

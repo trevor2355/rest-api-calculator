@@ -1,4 +1,4 @@
-const sequelize = require('../db/connection.js')
+const sequelize = require('../../db/connection.js')
 const { Sequelize, Op } = require('sequelize');
 const helpers = require('../helpers/helpers.js')
 
