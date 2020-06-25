@@ -1,6 +1,6 @@
 const usersServices = require('../services/usersServices.js');
 const helpers = require('../helpers/helpers.js');
-const authHelpers = require('../helpers/authHelpers.js')
+const authHelpers = require('../helpers/authHelpers.js');
 
 const getAllUsers = (req, res) => {
   let page = req.query.page;
@@ -15,19 +15,19 @@ const getAllUsers = (req, res) => {
       let safeUsers = unsafeUsers.rows.map(user => {
         delete user.dataValues.hash;
         delete user.dataValues.salt;
-        return user
+        return user;
       });
       let users = {
         count: unsafeUsers.count,
         rows: safeUsers
-      }
-      res.status(200).json(users)
+      };
+      res.status(200).json(users);
     })
     .catch(err => {
-      console.log(err)
-      res.status(500).json({ err })
-    })
-}
+      console.log(err);
+      res.status(500).json({ err });
+    });
+};
 
 const getUser = (req, res) => {
   let userId = req.params.userId;
@@ -43,8 +43,8 @@ const getUser = (req, res) => {
     })
     .catch(err => {
       res.status(500).json({ err });
-    })
-}
+    });
+};
 
 //this controller is used to register a user to the platform
 
@@ -57,37 +57,37 @@ const postUser = (req, res) => {
   usersServices.insertUser(user)
     // Delete the hashes and salts before sending request to client
     .then(result => {
-      delete result.dataValues.hash
-      delete result.dataValues.salt
-      res.status(201).json(result)
+      delete result.dataValues.hash;
+      delete result.dataValues.salt;
+      res.status(201).json(result);
     })
     .catch(err => {
-      res.status(500).json({ err })
-    })
-}
+      res.status(500).json({ err });
+    });
+};
 
 const updateUser = (req, res) => {
   let userId = req.params.userId;
   let update = req.body;
   usersServices.updateUser(userId, update)
     .then(result => {
-      res.status(201).json(result)
+      res.status(201).json(result);
     })
     .catch(err => {
-      res.status(500).json({ err })
-    })
+      res.status(500).json({ err });
+    });
 }
 
 const deleteUser = (req, res) => {
   let userId = req.params.userId;
   usersServices.deleteUser(userId)
     .then(result => {
-      res.status(200).json(result)
+      res.status(200).json(result);
     })
     .catch(err => {
-      res.status(500).json({ err })
-    })
-}
+      res.status(500).json({ err });
+    });
+};
 
 // This controller contains the logic for logging in 
 
@@ -95,11 +95,11 @@ const validateUser = (req, res) => {
   let loginCredentials = req.body;
   usersServices.validateUser(loginCredentials.username)
     .then(result => {
-      let user = result[0].dataValues
+      let user = result[0].dataValues;
 
       if(loginCredentials.admin && user.role !== 'admin') {
-        throw new Error('User not authorized')
-      }
+        throw new Error('User not authorized');
+      };
       let actualHash = user.hash;
       let actualSalt = user.salt;
 
@@ -113,13 +113,13 @@ const validateUser = (req, res) => {
         const tokenObject = authHelpers.issueJWT(user);
         res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires, user });
     } else {
-        throw new Error('you entered the wrong password')
-    }
+        throw new Error('you entered the wrong password');
+    };
     })
     .catch(err => {
-      res.status(404).json({ message: err })
-    })
-  }
+      res.status(404).json({ message: err });
+    });
+  };
 
 module.exports = {
   getAllUsers,
@@ -128,4 +128,4 @@ module.exports = {
   updateUser,
   deleteUser,
   validateUser
-}
+};

@@ -1,9 +1,9 @@
-const sequelize = require('../../db/connection.js')
+const sequelize = require('../../db/connection.js');
 const { Sequelize, Op } = require('sequelize');
-const helpers = require('../helpers/helpers.js')
+const helpers = require('../helpers/helpers.js');
 
 const Model = Sequelize.Model;
-class Service extends Model {}
+class Service extends Model {};
 Service.init({
   id: {
     allowNull: false,
@@ -39,7 +39,7 @@ Service.init({
   paranoid: true,
   timestamps: true,
   deletedAt: 'deleted_At'
-})
+});
 
 const selectAllServices = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Service.rawAttributes));
@@ -47,14 +47,14 @@ const selectAllServices = async (page, pageSize, searchTerm, filterFields, sortB
   if (filterFields.length === 0) {
     validatedFilterFields = attributes;
   } else {
-    validatedFilterFields = helpers.validateFields(filterFields, attributes)
-  }
+    validatedFilterFields = helpers.validateFields(filterFields, attributes);
+  };
   if (!sortBy) {
-    sortBy = 'id'
-  }
+    sortBy = 'id';
+  };
   if (!order) {
-    order = 'ASC'
-  }
+    order = 'ASC';
+  };
   const services = await Service.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'Service')
@@ -65,7 +65,7 @@ const selectAllServices = async (page, pageSize, searchTerm, filterFields, sortB
     ...helpers.paginate({ page, pageSize })
   });
   return services;
-}
+};
 
 const selectService = async (id) => {
   const service = await Service.findAll({
@@ -74,12 +74,12 @@ const selectService = async (id) => {
     }
   });
   return service;
-}
+};
 
 const insertService = async (service) => {
   const insert = await Service.create(service);
   return insert;
-}
+};
 
 const updateService = async (id, update) => {
   const service = await Service.update(update, {
@@ -88,7 +88,7 @@ const updateService = async (id, update) => {
     }
   });
   return service;
-}
+};
 
 const deleteService = async (id) => {
   const service = await Service.destroy({
@@ -97,7 +97,7 @@ const deleteService = async (id) => {
     }
   });
   return service;
-}
+};
 
 module.exports = {
   selectAllServices,
@@ -105,4 +105,4 @@ module.exports = {
   insertService,
   updateService,
   deleteService
-}
+};

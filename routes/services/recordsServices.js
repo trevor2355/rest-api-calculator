@@ -1,9 +1,9 @@
-const sequelize = require('../../db/connection.js')
+const sequelize = require('../../db/connection.js');
 const { Sequelize, Op } = require('sequelize');
-const helpers = require('../helpers/helpers.js')
+const helpers = require('../helpers/helpers.js');
 
 const Model = Sequelize.Model;
-class Record extends Model {}
+class Record extends Model {};
 Record.init({
   id: {
     allowNull: false,
@@ -48,7 +48,7 @@ Record.init({
   paranoid: true,
   timestamps: true,
   deletedAt: 'deleted_At'
-})
+});
 
 const selectAllRecords = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
@@ -56,14 +56,14 @@ const selectAllRecords = async (page, pageSize, searchTerm, filterFields, sortBy
   if (filterFields.length === 0) {
     validatedFilterFields = attributes;
   } else {
-    validatedFilterFields = helpers.validateFields(filterFields, attributes)
-  }
+    validatedFilterFields = helpers.validateFields(filterFields, attributes);
+  };
   if (!sortBy) {
-    sortBy = 'id'
-  }
+    sortBy = 'id';
+  };
   if (!order) {
-    order = 'ASC'
-  }
+    order = 'ASC';
+  };
   const records = await Record.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'Record')
@@ -74,7 +74,7 @@ const selectAllRecords = async (page, pageSize, searchTerm, filterFields, sortBy
     ...helpers.paginate({ page, pageSize })
   });
   return records;
-}
+};
 
 const selectRecord = async (id) => {
   const record = await Record.findAll({
@@ -83,7 +83,7 @@ const selectRecord = async (id) => {
     }
   });
   return record;
-}
+};
 
 const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filterFields, sortBy, order) => {
   let attributes = helpers.acceptedAttributes(Object.keys(Record.rawAttributes));
@@ -91,14 +91,14 @@ const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filte
   if (filterFields.length === 0) {
     validatedFilterFields = attributes;
   } else {
-    validatedFilterFields = helpers.validateFields(filterFields, attributes)
-  }
+    validatedFilterFields = helpers.validateFields(filterFields, attributes);
+  };
   if (!sortBy) {
-    sortBy = 'id'
-  }
+    sortBy = 'id';
+  };
   if (!order) {
-    order = 'ASC'
-  }
+    order = 'ASC';
+  };
   const records = await Record.findAndCountAll({
     where: {
       user_id,
@@ -110,12 +110,12 @@ const selectAllRecordsOfUser = async (user_id, page, pageSize, searchTerm, filte
     ...helpers.paginate({ page, pageSize })
   });
   return records;
-}
+};
 
 const insertRecord = async (record) => {
   const insert = await Record.create(record);
   return insert;
-}
+};
 
 const updateRecord = async (id, update) => {
   const record = await Record.update(update, {
@@ -124,7 +124,7 @@ const updateRecord = async (id, update) => {
     }
   });
   return record;
-}
+};
 
 const deleteRecord = async (id) => {
   const record = await Record.destroy({
@@ -133,7 +133,7 @@ const deleteRecord = async (id) => {
     }
   });
   return record;
-}
+};
 
 module.exports = {
   selectAllRecords,
@@ -142,4 +142,4 @@ module.exports = {
   insertRecord,
   updateRecord,
   deleteRecord
-}
+};

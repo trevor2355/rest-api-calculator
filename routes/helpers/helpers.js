@@ -5,11 +5,11 @@ const sequelize = require('../../db/connection.js')
 
 const paginate = ({ page, pageSize }) => {
   if (!page) {
-    page = 0
-  }
+    page = 0;
+  };
   if (!pageSize) {
-    pageSize = 200
-  }
+    pageSize = 200;
+  };
   const offset = page * pageSize;
   const limit = pageSize;
 
@@ -24,32 +24,32 @@ const paginate = ({ page, pageSize }) => {
 const filter = ( searchTerm, fields, modelString ) => {
   //if there is no search term return an empty object
   if (!searchTerm) {
-    return {}
-  }
+    return {};
+  };
 
   let filterBy = [];
   
   for (let i = 0; i < fields.length; i++) {
-    let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`})
-    filterBy.push(fieldfunc)
-  }
+    let fieldfunc = sequelize.where( sequelize.cast(sequelize.col(`${modelString}.${fields[i]}`), 'varchar'), {[Op.like]: `%${searchTerm}%`});
+    filterBy.push(fieldfunc);
+  };
   
   return {
     [Op.or]: filterBy
-  }
-}
+  };
+};
 
 // This function will parse through the query on the GET request to extract all of the filterFields into an array
 
 const collectFilterFields = (array, num, queryObj) => {
   let currentFilterField = 'filterField' + num;
   if (queryObj[currentFilterField] || queryObj[currentFilterField] === 0) {
-    array.push(queryObj[currentFilterField])
+    array.push(queryObj[currentFilterField]);
     return collectFilterFields(array, num + 1, queryObj);
   } else {
     return array;
-  }
-}
+  };
+};
 
 // This function will eliminate filterFields that contain sensitive information or are unnecessary
 
@@ -58,19 +58,19 @@ const acceptedAttributes = (attributes) => {
   for (let i = 0; i < attributes.length; i++) {
     let atr = attributes[i];
     if (atr === 'hash' || atr === 'salt' || atr === 'createdAt' || atr === 'updatedAt') {
-      continue
+      continue;
     } else {
       acceptableAtrributes.push(atr);
-    }
-  }
+    };
+  };
   return acceptableAtrributes;
-}
+};
 
 // This function will elimate any filterFields that are not fileds of the requested entity
 
 const validateFields = (fields, attributes) => {
   let validatedFields = fields.filter(field => attributes.includes(field));
-  return validatedFields
+  return validatedFields;
 }
 
 module.exports = {
@@ -79,4 +79,4 @@ module.exports = {
   collectFilterFields,
   acceptedAttributes,
   validateFields
-}
+};

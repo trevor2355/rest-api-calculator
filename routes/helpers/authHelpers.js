@@ -8,7 +8,7 @@ const path = require('path');
 function validPassword(password, hash, salt) {
     let hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
     return hash === hashVerify;
-}
+};
 
 // This function will generate a salt and a hash to store in the database when a user is created
 
@@ -19,7 +19,7 @@ function genPassword(password) {
       salt: salt,
       hash: genHash
     };
-}
+};
 
 // This function will create and issue a JWT for a user once they have successfully logged in
 
@@ -36,37 +36,37 @@ function issueJWT(user) {
   return {
     token: "Bearer " + signedToken,
     expires: expiresIn
-  }
-}
+  };
+};
 
 // This middleware function will check to make sure a user is admin before accessing certain routes
 
 const checkAdminRole = function (req, res, next) {
   if(req.user.role === 'admin') {
-    console.log('USER IS ADMIN   PERMISSION GRANTED')
-    next()
+    console.log('USER IS ADMIN   PERMISSION GRANTED');
+    next();
   } else {
     //*!
-    console.log('YOU DO NOT HAVE ACCESS')
-  }
-}
+    console.log('YOU DO NOT HAVE ACCESS');
+  };
+};
 
 // This middleware function will check to maker sure a user is only requesting their personal data
 
 const checkUserRequestIsAllowed = function (req, res, next) {
   if(req.user.role === 'admin') {
-    console.log('USER IS ADMIN   PERMISSION GRANTED')
-    next()
+    console.log('USER IS ADMIN   PERMISSION GRANTED');
+    next();
   } else {
     if (req.params.userId == req.user.id) {
-      console.log('YOU HAVE ACCESS TO YOUR OWN RECORDS')
-      next()
+      console.log('YOU HAVE ACCESS TO YOUR OWN RECORDS');
+      next();
     } else {
       //*!
-      console.log('YOU ONLY HAVE ACCESS TO YOUR OWN USER RECORDS')
-    }
-  }
-}
+      console.log('YOU ONLY HAVE ACCESS TO YOUR OWN USER RECORDS');
+    };
+  };
+};
 
 module.exports = {
   validPassword,
@@ -74,4 +74,4 @@ module.exports = {
   issueJWT,
   checkAdminRole,
   checkUserRequestIsAllowed
-}
+};

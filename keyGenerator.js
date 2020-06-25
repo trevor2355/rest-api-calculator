@@ -21,6 +21,6 @@ function genKeyPair() {
     
     // Create the private key file
     fs.writeFileSync(__dirname + '/id_rsa_priv.pem', keyPair.privateKey);
-}
+};
 // Generates the keypair
 genKeyPair();

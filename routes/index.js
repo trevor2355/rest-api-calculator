@@ -21,9 +21,9 @@ app.use(passport.initialize());
 
 app.listen(PORT, () => {
   console.log(`REST API Calculator Server listening on PORT: ${PORT}`)
-})
+});
 
 //handle the api routes here
-app.use('/api', routes)
+app.use('/api', routes);
 
 const db = require('../db/connection.js');

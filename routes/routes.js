@@ -39,9 +39,9 @@ router.delete('/services/:serviceId', passport.authenticate('jwt', { session: fa
 
 // Request Services Routes
 
-router.post('/services/request/:serviceId', passport.authenticate('jwt', { session: false }), servicesController.request)
+router.post('/services/request/:serviceId', passport.authenticate('jwt', { session: false }), servicesController.request);
 
-router.post('/services/randomstringgenerator', passport.authenticate('jwt', { session: false }), servicesController.requestRandomString)
+router.post('/services/randomstringgenerator', passport.authenticate('jwt', { session: false }), servicesController.requestRandomString);
 
 
 // Users Routes
@@ -58,4 +58,4 @@ router.put('/users/:userId', passport.authenticate('jwt', { session: false }), a
 
 router.delete('/users/:userId', passport.authenticate('jwt', { session: false }), authHelpers.checkAdminRole, usersController.deleteUser);
 
-module.exports = router
+module.exports = router;

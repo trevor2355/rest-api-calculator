@@ -1,9 +1,9 @@
-const sequelize = require('../../db/connection.js')
+const sequelize = require('../../db/connection.js');
 const { Sequelize, Op } = require('sequelize');
-const helpers = require('../helpers/helpers.js')
+const helpers = require('../helpers/helpers.js');
 
 const Model = Sequelize.Model;
-class User extends Model {}
+class User extends Model {};
 User.init({
   id: {
     allowNull: false,
@@ -48,7 +48,7 @@ User.init({
   paranoid: true,
   timestamps: true,
   deletedAt: 'deleted_At'
-})
+});
 
 
 const selectAllUsers = async (page, pageSize, searchTerm, filterFields, sortBy, order) => {
@@ -57,14 +57,14 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields, sortBy, 
   if (filterFields.length === 0) {
     validatedFilterFields = attributes;
   } else {
-    validatedFilterFields = helpers.validateFields(filterFields, attributes)
+    validatedFilterFields = helpers.validateFields(filterFields, attributes);
   }
   if (!sortBy) {
-    sortBy = 'id'
-  }
+    sortBy = 'id';
+  };
   if (!order) {
-    order = 'ASC'
-  }
+    order = 'ASC';
+  };
   const users = await User.findAndCountAll({
     where: {
       ...helpers.filter(searchTerm, validatedFilterFields, 'User')
@@ -75,7 +75,7 @@ const selectAllUsers = async (page, pageSize, searchTerm, filterFields, sortBy, 
     ...helpers.paginate({ page, pageSize })
   });
   return users;
-}
+};
 
 const selectUser = async (id) => {
   const user = await User.findAll({
@@ -84,12 +84,12 @@ const selectUser = async (id) => {
     }
   });
   return user;
-}
+};
 
 const insertUser = async (user) => {
   const insert = await User.create(user);
   return insert;
-}
+};
 
 const updateUser = async (id, update) => {
   const user = await User.update(update, {
@@ -98,7 +98,7 @@ const updateUser = async (id, update) => {
     }
   });
   return user;
-}
+};
 
 const deleteUser = async (id) => {
   const user = await User.destroy({
@@ -107,7 +107,7 @@ const deleteUser = async (id) => {
     }
   });
   return user;
-}
+};
 
 // This is used to look up a user by username (used when logging in)
 
@@ -118,7 +118,7 @@ const validateUser = async (username) => {
     }
   });
   return user;
-}
+};
 
 module.exports = {
   selectAllUsers,
@@ -128,4 +128,4 @@ module.exports = {
   deleteUser,
   validateUser,
   User
-}
+};
